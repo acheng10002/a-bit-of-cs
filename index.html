@@ -1,0 +1,106 @@
+<!--  most elegant solution becomes important when I start working with large data sets, like when my website 
+gets a lot of traffic 
+
+some problems require tools beyond just arrays and iterators
+
+algorithm - set of instructions for solving some problem, step by step
+
+pseudocode - English like syntax that resembles a programming language
+
+compiler - translates the entire source code into machine code before the program is run 
+interpreter - directly executes the instructions in written in a programming language without converting them to machine code first
+
+ALGORITHM PSEUDOCODE
+
+// n is variable that is initalized to zero
+let n = 0
+
+// start of a loop
+for each person in room
+ 
+    // indentation here means this step repeats
+    set n = n + 1
+
+ALGORITHM TESTING PHASE
+try it with 2 people, and yes it will work
+try with a corner case of 0 people, works again
+
+
+let n = 0
+for each pair of people in room
+    set n = n + 2
+BUT, THIS IS BUGGY BECAUSE THERE'S A MISTAKE, WHAT IF THERE'S AN ODD # OF PPL
+
+
+let n = 0
+for each pair of people in room
+    set n = n + 2
+// introducing a condition/branch here
+if 1 person remains unpaired
+    set n = n + 1
+
+phonebook is just a sorted list of names
+use binary search to require at most 10 page turns for a 1,000 page phonebook
+27 steps for a 1,000,000 page phonebook
+
+computer's processor scales amazingly well
+
+PageRank - algorithm underlying Google search results; crawled the internet and kept track of what other
+           websites linked back to a page  
+           an important page will have many more links pointing at it than a less important page
+           each link is also scored, links from other important pages being worth more than links
+           from less important pages 
+
+What part do alorithms play in modern web development, specifically user-based websites?
+
+for typical websites, algorithms are mostly not necessary, although hash tables and other caching methods may be helpful
+
+algorithms become important in web dev when I hae a lot of data that I have to process
+ex. Quora search engine or one like it
+    once the site gains thousands or millions of users, the search engine would not be able to handle the large
+    bandwidth of requests
+algorithms also help when I am performing complicated transformations on that data 
+ex. I want to develop a CAPTCHA
+    if I learn algorithms, I will be better equipped to generates images with blur, ripples, etc. 
+    another ex. Google docs, impossible to do real-time text editing without algorithms
+
+algorithsm are an essential characteristic of modern user populated web apps
+in order for user-populated web apps to grow big, I need to support a lot of data search, browsing, updating, and deleting
+in order to address the issues that come with scaling, I have to use advanced data structures and algorithms 
+
+syntactic token - basic unit of syntax in programming
+int x = 5;
+int is a keyword
+x is an identifier
+= is an operator
+5 is a literal 
+; is a delimiter
+
+recursion - idea that a function calls itself
+takes a big problem and starts breaking down into smaller and smaller pieces, and feeds solutions back to the original function
+until some sort of answer is achieved and the whole chain unwinds
+or when a task can be simplified into an easy action plus a simpler variant of the same task 
+or to deal with certain data structures 
+
+any problem that I can solve recursively can be solved using iterators
+*some problems break down into too many pieces and overwhelm the computer's memory
+
+limitation of using recursive solutions
+what types of problems are more suited for loops than recursion 
+what is "recursive depth" - maximal number of nested calls, including the first one 
+                            maximal number of contexts in the stack 
+what is 'stack overflow' and what it has to do with a recursive problem
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A Bit of Computer Science</title>
+    <link rel="stylesheet" id=""" href="">
+  </head>
+  <body>
+    <h1>A Bit of Computer Science</h1>
+    <script src="script.js"></script>
+  </body>
+</html>
