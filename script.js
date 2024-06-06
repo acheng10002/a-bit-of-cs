@@ -900,3 +900,856 @@ function mergeSort(array) {
 
 let mergedArray = mergeSort([105, 79, 100, 110]);
 console.log(mergedArray);
+
+/* Time Complexity
+    I will spend as much, if not more, time reading code than writing it
+    I need to make sure new features are integrated with ease 
+    I need to understand how the choices I make impact performance, so that I can choose
+    the right data structure and algorithm for my requirement
+    
+    How to measure time efficiency 
+        running a script might be faster or slower depending on what else my computer is doing 
+        measure instead, how many STEPS it takes to complete
+
+    What is Big O
+
+    What are the Big O notations used to measure an algorithm's efficiency
+
+    How else can an algorithm's efficiency be measured
+
+    What to do when 2 algorithms have the same time complexity
+*/
+
+// program that prints out all odd numbers between 1 and 10
+function oddNumbersLessThanTen() {
+  let currentNumber = 1; // 1 step
+
+  while (currentNumber < 10) {
+    // 1 step - 1 of 3 that goes every iteration
+    // 1 step - 1 of 3 that goes every iteration
+    if (currentNumber % 2 != 0) {
+      // 1 step - 1 of 3 that goes every iteration
+      console.log(currentNumber); // 1 step every 2 iterations
+    }
+
+    currentNumber += 1; // 1 step
+  }
+  // 1 last step to compare currentNumber one last time to see that it is not less than twn any more
+}
+
+oddNumbersLessThanTen();
+
+/* 3 steps for every iteration, 9 iterations, 27 steps
+1 step which iterates for only half the iterations, 5 steps
+assign an initial value to currentNumber, 1 step
+check the exit condition of the loop, 1 step 
+
+oddNumbersLessThanTen takes 34 steps to complete */
+
+function oddNumbers(maxNumber) {
+  let currentNumber = 1; // 1 step
+
+  while (currentNumber < maxNumber) {
+    // 1 step - 1 of 3 that goes every iteration
+    // 1 step - 1 of 3 that goes every iteration
+    if (currentNumber % 2 != 0) {
+      // 1 step - 1 of 3 that goes every iteration
+      console.log(currentNumber); // 1 step every 2 iterations
+    }
+    currentNumber += 1; // 1 step
+  }
+}
+
+oddNumbers(10);
+// no concrete number I can use to measure code efficiency here because it changes based on external input
+
+/* I WANT TO MEASURE HOW THE NUMBER OF STEPS OF THE ALGORITHM CHANGES WHEN THE DATA CHANGES, TELLS ME IF
+THE CODE I WRITE WILL SCALE 
+
+Asymptotic Notations, *Big O 
+3 notations that measure running time of an algorithm
+Big O Notation - the upper bound of an algorithm; worst-case scenario for how the algorithm will perform
+Omega Notation - the lower bound of an algorithm; best-case scenario 
+Theta Notation - analyzes the average case complesity of an algorithm
+
+Big O is most commonly referenced, the worst-case scenario of any code has to be scalable as the inputs grow in my app 
+From fastest to slowest -
+O(1) - constant complexity
+O(log n) - logarithmic complexity
+O(n) - linear complexity
+O(n log n) - n log n complexity
+O(n^2) - quadratic complexity
+O(n^3) - cubic complexity
+O(2^n) - exponential complexity
+O(n!) - factorial complexity
+
+O(1) - constant complexity
+if I want to look up the element at index 2, arr[2] gets me it, taking one step
+*/
+arr1 = [1, 2, 3, 4, 5];
+
+// if the array doubles in size, I can still access any element in just one step
+arr2 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+/* I can keep adding data, but I can always access any element in 1 step
+so it's constant, O(1) 
+(technically it takes longer than 1 step because the computer has to look up where the array is in memory, and then from
+the first element in the array, jump to the index argument, but the extra 2 steps are incidental) 
+I am just measuring an algorithm's complexity relative to the size of the input
+
+O(log n) - logarithmic complexity
+the number of steps an algorithm takes increases by 1 as the data doubles 
+ex. going from 5,000 to 10,000 data elements and only taking one additional step
+
+Binary Search has a logarithmic complexity
+it only works on sorted arrays 
+*/
+arr3 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+/* if I want to know if arr3 had 7, Binary Search would guess the middle index of the array and see what is there
+if the number at the middle index is 6, anything to the left of that index cannot be 7
+in one step, I've eliminated half the array 
+Size of An Array Doubling   How Many Steps in Big O Terms to Arrive at 1 Element
+1                           1
+2                           2
+4                           3
+8                           4
+16                          5
+32                          6
+
+no matter the size of the input, the function takes the same amount of time to compute 
+it also has a constant space complexity - it doesn't store any values in memory */
+function timesTwo(num) {
+  return 2 * num;
+}
+
+// this is just one operation
+let result1 = timesTwo(5); // 10
+
+// this is just one operation
+let result2 = timesTwo(2000); // 4000
+
+/* this function still has a Big O of 1 because 2 operatons doesn't take significantly longer than 1 operation 
+it also has a constant space complexity - only stores one value in memory 
+if I increase the size of the input, the space in memory remains the same */
+function manyTimes(num) {
+  let total = 4 * num;
+  return total * 3;
+}
+
+/*
+time complexity - analyzing how the runtime of an algorithm changes as the input increases
+space complexity - space required by an algorithm, not including inputs
+
+there is usually a trade-off between space complexity and time complexity, to increase the speed of an algorithm, I'd
+likely need to store more variables in memory 
+
+O(n) - linear complexity
+As the number of items grows, the number of steps grows at exactly the same rate
+every time I iterate over an array, that's linear complexity
+if I have an array of 5 items, then I can iterate every element in 5 steps
+an array of 10 items can be iterated in 10 steps
+an algorithm of O(n) means the number of steps will increase in line with the number of elements in the data structure
+
+loops over the input array starting at the last item, and builds up a new array which 
+ends up being the input array reversed 
+this function has a Big O(n), linear time complexity, the execution time or number of operations the function has to do
+increases linearly with input size */
+function reverseArray(arr) {
+  let newArr = [];
+  for (let i = arr.length - 1; i >= 0; i--) {
+    newArr.push(arr[i]);
+  }
+  return newArr;
+}
+
+const reversedArray1 = reverseArray([1, 2, 3]);
+const reversedArray2 = reverseArray([1, 2, 3, 4, 5, 6]);
+
+// simple function that checks price of a product with a given name
+const productList = [
+  { name: "Laptop", price: 18487 },
+  { name: "Keyboard", price: 356 },
+  { name: "Monitor", price: 8345 },
+  // ...assuming 10,000 more items
+  { name: "Tablet", price: 9875 },
+];
+
+/* iterates through each element in the list until it finds the product with target game 
+  Big O (n), linear time complexity */
+function lookupPrice(name, list) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].name === name) {
+      // when target found, prints its name and price, and then stops execution
+      console.log(`Price of '${list[i].name}' is: ${list[i].price}`);
+      break;
+    }
+  }
+}
+
+lookupPrice("Monitor", productList); // "Price of 'Monitor' is: 8345"
+
+/* when analyzing a function eith multiple inputs, make sure a unique variable is assigned to each input */
+const numbers = [1, 2, 3, 4];
+const letters = ["a", "b"];
+
+function printLists(listOne, listTwo) {
+  // Big O(a)
+  for (let i = 0; i < listOne.length; i++) {
+    console.log(listOne[i]);
+  }
+
+  // Big O(b)
+  for (let i = 0; i < listTwo.length; i++) {
+    console.log(listTwo[i]);
+  }
+}
+
+/* whole function has // Big O(a + b) 
+looping through 2 separate arrays, any step that happens, one after another, add them 
+looping 2 nested arrays, any step that is nested, multiply them */
+
+printLists(numbers, letters);
+
+// another function w/ O(n)
+const numbers1 = [1, 2, 3, 4, 5, 6];
+
+function printFirstHalf(list) {
+  for (let i = 0; i < list.length / 2; i++) {
+    console.log(list[i]);
+  }
+}
+
+printFirstHalf(numbers);
+
+const numbers2 = [1, 2, 3];
+
+function printTwiceForNoReason(list) {
+  for (let i = 0; i < list.length; i++) {
+    console.log(list[i]);
+  }
+  for (let j = 0; j < list.length; j++) {
+    console.log(list[j]);
+  }
+}
+
+printTwiceForNoReason(numbers2);
+// when adding complexities together, I define the constant values with numbers and scalable parts with variable names (letters)
+
+/*
+O(n log n) - n log n/linearithmic complexity
+I have an algorithm that is initially O(log n) such as Binary Search, where it repeatedly breaks an array in half
+each of those array halves is processed by another algorithm with a complexity of O(n)
+merge sort algorithm has a O(n log n)
+Cartesian tree has a O(n log n)
+linearithmic time is a combination of linear time and logarithmic time
+- it has an outer loop that iterates through a list (n operation)
+- if it has an inner loop that is cutting down/reducing the data set on each iteration (log n operation)
+- then the overall algorithm has a Big O(n log n)
+
+merge sort has a linearithmic time complexity */
+function linearithmic(n) {
+  // outer loop iterates through 0 to n linearly (n)
+  for (let i = 0; i < n; i++) {
+    /* inner loop is log n because j is getting doubled on each loop 
+    if I double the size of my input, n
+    the outer loop will have twice as many iterations
+    whereas the inner loop would only have 1 extra iteration */
+    for (let j = 1; j < n; j = j * 2) {
+      console.log("Hello");
+    }
+  }
+}
+
+/*
+O(log n) - logarithmic complexity
+logarithms - quantity representing the power to which a fixed number (the base) must be raised to produce a given number
+in CS, if the base is unspecified, it is assumed to be 2, binary logarithm
+*/
+function logTime(arr) {
+  let numberOfLoops = 0;
+
+  // multiplies the current value of i by 2, so it goes from 1, 2, 4, 8, 16, 32
+  for (let i = 1; i < arr.length; i *= 2) {
+    numberOfLoops++;
+  }
+  return numberOfLoops;
+}
+
+/* every time I double the length of the input array, the number of operations increases linearly, by 1 each time 
+in other words, the number of operations doesn't increase very much when I increase the size of the input */
+let loopsA = logTime([1]); // 0
+let loopsB = logTime([1, 2]); // 1
+let loopsC = logTime([1, 2, 3, 4]); // 2
+let loopsD = logTime([1, 2, 3, 4, 5, 6, 7, 8]); // 3
+let loopsE = logTime([Array[16]]); // 4
+
+/*
+visualize log n time with a balanced binary tree
+the number of nodes double with each single step down the binary tree
+binary search algorithm has a Big O (log n)
+- if I input a sorted array of length 16 (the bottom level of the balanced binary tree), it would only take 
+4 steps (to get to the top tree node) to find the number I am looking for
+
+these algorithms are "divide and conquer" steyle, meaning the data set is cut down/reduced upon each loop iteration
+the algorithm has less data to deal with on each loop and so can find or sort things quickly
+
+O(n^2) - quadratic complexity
+this complexity is commonly seen when I loop over a data set, and within each loop, I loop over it again
+ex. if my array has 3 items, the nested loops require 3^2 = 9 substeps
+    adding just one more item to 4, nested loops require 4^2 = 16 substeps
+    adding one more item to 5, nested loops require 5^2 = 25 substeps
+    array with n items, nested loops require n^2 substeps
+*/
+
+function multiplyAll(arr1, arr2) {
+  if (arr1.length !== arr2.length) return undefined;
+
+  let total = 0;
+  // first loop loops over the first array
+  for (let i of arr1) {
+    /* second loop, nested inside the first one, loops over the second array
+        for every item I loop over in the first array, I have to loop over every item in the second array */
+    for (let j of arr2) {
+      // for every item in arr1, loop over item in arr2, first n^2 operation
+      /* multiply every number in the first array with every number in the second array and return the sum 
+            of all these products */
+      total += i * j; // multiply 2 numbers, second n^2 operation
+      // add to the total, third n^2 operation
+      // this makes Big O(3 * n^2)
+    }
+  }
+  return total;
+}
+
+let otherResult1 = multiplyAll([1, 2], [5, 6]); // 33
+let otherResult2 = multiplyAll([1, 2, 3, 4], [5, 3, 1, 8]); // 170
+
+/* for small inputs, I can choose the algorithm that is easiest to read or understand
+*** if possible, avoid nested for loops if the input size is large
+    use two separate loops instead */
+
+/* for nested loops with 2 different inputs, Big O(a * b ) */
+const drinks = ["water", "coffee"];
+const persons = ["person 1", "person 2", "person 3", "person 4"];
+
+function servingDrinks(drinkList, personsList) {
+  for (let i = 0; i < drinkList.length; i++) {
+    for (let j = 0; j < personsList.length; j++) {
+      console.log(`Gives ${drinksList[i]} to ${personsList[i]}`);
+    }
+  }
+}
+
+servingDrinks(drinks, persons);
+/* above, not to be confused with two nested loops iterating over the same inputs
+double check when I have 2 nested loops, they don't always loop through the same list 
+loops using the same input:
+loop through the same array one after another: O(n), linear time
+loop through same array with 2 nested loops: O(n^2), quadraitc time
+
+compare all the existing complexities that I have, then pick the worst scaling one, the
+dominant one, and drop the non-dominant terms.
+*/
+const fruits = ["apple", "strawberry", "watermelon"];
+
+function printAndPair(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    console.log(arr[i]);
+  }
+
+  const totalPairs = arr.length * arr.length;
+  console.log("Estimated paired elements length: ", totalPairs);
+
+  for (let j = 0; j < arr.length; j++) {
+    for (let k = 0; k < arr.length; k++) {
+      console.log(`${arr[j]} - ${arr[k]}`);
+    }
+  }
+}
+
+printAndPair(fruits);
+// above, has O(n^2)
+
+// Big O applies to built-in JS functions
+let arr4 = [1, 2, 3, 4];
+
+// adding and removing to the end of an array => Big O(1), constant complexity
+arr4.push(5); // [1, 2, 3, 4, 5]
+arr4.pop(); // [1, 2, 3]
+
+/* adding and removing to the front of an array => Big O(n) because I have to re-index 
+every item in the array, linear complexity */
+arr4.unshift(0); //
+arr4.shift(); //
+/*
+O(n^3) - cubic complexity
+triple nested loops
+if looping over an array with n items, 1 extra item adds an extra outer loop, an extra middle loop, and an extra innermost loop
+an array of size n, I need a total of n^3 substeps
+array of 3 items, nested loops requite 3^3 = 27 substeps
+array of 4 items, nested loops requite 4^3 = 64 substeps
+array of 5 items, nested loops requite 5^3 = 125 substeps
+
+O(2^n) - exponential complexity
+with each item added to the data size, the number of steps doubles from the previous number of steps
+Size of An Array Increasing by 1  How Many Steps in Big O Terms to Arrive at 1 Element
+1                                  2
+2                                  4
+3                                  8
+4                                  16
+5                                  32
+6                                  64
+7                                  128
+an algorithm with this Big O should be avoided at all times, because I won't be processing much data quickly
+
+algorithm with exponential time complexity - is one where the number of operations doubles every time I 
+                                              increase the input by one 
+ex. if input size is 1, then 2^1 = 2 operations
+    if input size is 2, then 2^2 = 4 operations
+    input size                      operations
+    1                               2
+    2                               4
+    3                               8
+    4                               16
+    5                               32
+    ...                             ...
+    16                              65,536        
+    
+exponential time is the opposite of logarithmic time 
+
+pass in an index number to return the nth Fibonacci number in the sequence */
+function fibonacci(num) {
+  // base cases
+  if (num === 0) return 0;
+  else if (num === 1) return 1;
+
+  // recursive part
+  return fibonacci(num - 1) * fibonacci(num - 2);
+}
+
+fibonacci(1); // 1
+fibonacci(2); // 1
+fibonacci(3); // 2
+fibonacci(4); // 3
+fibonacci(5); // 5
+
+/*
+O(n!) - factorial complexity
+If I ever need to calculate permutations or combinations, I will run into algorithms with factorial complexity
+if I have an array and have to work out all the combinations I can make from the array, that is a factorial complexity
+
+Alternatives to Big O
+Big Omega notation
+Omega is the best case scenario of an algorithm 
+*/
+function findValue(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    let item = arr[i];
+    if (item === 1) {
+      return item;
+    }
+  }
+}
+
+findValue(arr);
+
+/* algorithm with factorial growth - traveling salesman problem 
+
+recursive factorial algorithm 
+every digit in my factorial will run its own function until it reaches 0 
+each recursive layer adds its product to my original number */
+function recursiveFactorial(n) {
+  let num = n;
+  if (n === 0) return 1;
+  for (let i = 0; i < n; i++) {
+    num = n * factorial(n - 1);
+  }
+
+  return num;
+}
+
+const t0 = performance.now();
+recursiveFactorial(1);
+const t1 = performancenow();
+console.log("The function took: " + (t1 - t0) + " milliseconds.");
+
+recursiveFactorial(1); // 0.02 ms
+recursiveFactorial(2); // 0.04 ms
+recursiveFactorial(10); // 42.08 ms
+recursiveFactorial(12); // 5 s
+recursiveFactorial(13); // 70 s
+recursiveFactorial(14); //
+
+/* in the worst case, if the item is not in the array, the algorithm has linear complexity O(n)
+O(n) because if the item is not in the array, the code has to iterate on every value
+but, in the best-case scenario, Omega Complexity would be O(1) if the value I was looking for is the first time in the array
+
+Omega Notation isn't useful because it isn't likely that the item I want will be the first item in my data structure search, 
+so I get no idea of how well the algorithm will scale
+*/
+
+/*
+Big Theta notation
+Big Theta aims to give the exact value or a useful range between narrow upper and lower bounds
+if a piece of code looped every item in a an array, then it doesn't matter the size of the array, the algorithm runs in O(n) time
+in its best-case and worst-case scenario 
+the exact performance in all scenarios is O(n)
+
+Why Big O
+I need to be confident that my code won't lock up and leaves users frustrated if I suddenly get an input of a million items instead of 10
+
+Algorithms with the same complexity
+if I have 2 algorithms with the same complexity, does that mean they're equally good to use?
+*/
+function oddNumbersLessThanTenAgain() {
+  let currentNumber = 1; // 1 step
+
+  while (currentNumber < 10) {
+    // 1 step - 1 of 3 that goes every iteration
+    // 1 step - 1 of 3 that goes every iteration
+    if (currentNumber % 2 != 0) {
+      // 1 step - 1 of 3 that goes every iteration
+      console.log(currentNumber); // 1 step every 2 iterations
+    }
+
+    currentNumber += 1; // 1 step
+  }
+  // 1 last step to compare currentNumber one last time to see that it is not less than twn any more
+}
+oddNumbersLessThanTenAgain();
+/* this algorithm's time complexity is O(n) - as the data size increases, the number of steps of my algorithm increases at the same rate */
+
+function oddNumbersAgain(maxNumber) {
+  let currentNumber = 1; // 1 step
+
+  while (currentNumber < maxNumber) {
+    // 1 step - 1 of 3 that goes every iteration
+    // 1 step - 1 of 3 that goes every iteration
+    if (currentNumber % 2 != 0) {
+      // 1 step - 1 of 3 that goes every iteration
+      console.log(currentNumber); // 1 step every 2 iterations
+    }
+    currentNumber += 2; // 1 step
+  }
+}
+
+oddNumbersAgain(10);
+/* currentNumber is increased by 2
+for an input of n, the number of steps is about half as I iterate by 2 each time 
+Big O doesn't concern itself with constants, so the Big O of both algorithms is O(n)
+
+Big-O notation  Computations for 10 elements    Computations for 100 elements   Computations for 1000 elements
+O(1)            1                               1                               1
+O(log n)        3                               7                               10
+O(n)            10                              100                             1000
+O(n log n)      33                              664                             9966
+O(n^2)          100                             10000                           1000000
+O(2^n)          1024                            1.26765E+30                     1.0715E+301
+O(n!)           3628800                         9.3326E+157                     4.0238726E+2567
+
+How do I reduce everything into one end result 
+1. analyze and break my function into individual oeprations
+2. calculate the Big O of each operation
+3. sum Big O and calculate end result
+
+Rules:
+- always assume the worst case
+- each input should have a unique variable
+- drop the constants
+- drop non-dominant terms
+*/
+
+/* Space Complexity
+same notations can be used to measure how a change in input for algorithms can affect the amount of memory used
+talking about primary memory here, the mwmory available to my system to execute algorithms
+
+What is meant by space complexity
+space complexity - total space used by an algorithm relative to the size of the input
+auxillary space - extra space used by the algorithm, ex. temporary variables created during the execution of the algorithm  
+
+Why is it important to consider how a algorithm uses memory space
+most algorithms will deal with manageable input sizes
+more likely to run into an issue with my program being slow before I have any issues with memory being used up
+
+How is space complexity measured
+O(1) - constant complexity
+no matter the arguments passed to the function call, only a single value is created is O(1) */
+function multiply(num1, num2) {
+  return num1 * num2;
+}
+
+/* O(n) - linear complexity
+n, unknown length of the array, + 1 variable called sum
+O(n + 1) => O(n) */
+function sumArr(arr) {
+  const copyArr = arr.slice();
+  let sum = 0;
+  copyArr.forEach((number) => {
+    sum += number;
+  });
+  return sum;
+}
+
+/* O(n) 
+many data structures share O(n) space complexity */
+function sumObjectValues(obj) {
+  const copyObject = { ...obj };
+  let sum = 0;
+  Object.values(copyObject).forEach((value) => {
+    sum += value;
+  });
+  return sum;
+}
+/*
+Other complexities & considerations
+What constitutes using space in the context of an algorithm?
+methods that duplicate an array and object argument 
+err on the side of caution and consider the space of arguments passed to my methods 
+
+memoization - optimization technique for speeding up programs by storing the results 
+of expensive function calls to pure functions and returning the cached result when the same inputs occur again
+Consider readability first
+Look to refactor for efficiency if there is clear impact on perforamce */
+function otherSumArr(arr) {
+  let sum = 0;
+  arr.forEach((number) => {
+    sum += number;
+  });
+  return sum;
+}
+
+/* consider if my code is as efficient as it could be
+Am I creating unnecessary variables?
+Does my algorithm use a data structure with a worse time complexity for what it's 
+mostly used for than another data structure? 
+
+memory consumption of an algorithm can be broken down into three parts:
+- variables and constants
+- inputs
+- execution: if a function completes as soon as it is called, no extra space is needed for it to be done
+             in the case of a recursive function or a function calling another function inside of itself, extra
+             space is needed in order to hold the values that are waiting to be executed
+*/
+
+// O(1) space complexity
+function getSum(x, y, z) {
+  let sum = 0;
+  sum = x + y + z;
+  return sum;
+}
+
+// O(n), linear space complexity
+function otherGetSum(array) {
+  let sum = 0;
+  for (let i = 0; i < array.length; i++) {
+    sum += array[i];
+  }
+  return sum;
+}
+
+/* O(n) space complexity 
+Big O is still O(n) because each time the function calls itself again, space needs to be made for the 
+value being stored on the stack, waiting for execution */
+function anotherGetSum(array) {
+  let size = array.length;
+  if (size === 1) {
+    return array[0];
+  } else {
+    // function calls itself multiple times
+    return array[0] + anotherGetSum([...array.slice(1, size + 1)]);
+  }
+}
+
+/* if my solution to an algorithm involves creating two hash-tables, my space complexity is going to be
+a lot higher than if it only involves creating a single primitive variable 
+call stack - stack data structure that stores information about the active subroutine of a program 
+with recursion, every time I call the function recursively, I add one more function the call stack 
+if the recursive function is establishing a variable, that variable is being established anew every time 
+I call the function 
+
+ex. I have a function that requires 2 rocks to be balanced in my hands
+    every time I call the function, I add two more rocks to my pile
+    I can't start putting rocks down until the function they are for finishes
+    because recursion involves nesting, I'm doing a lot of things at once, 
+    so that rock pile gets bigger and bigger
+    
+    the more levels of recursion I have, the greater the space complexity 
+    I will get better performance out of my machine, the fewer functions I've got going */
+
+/* Common Data Structures and Algorithmss
+What is a data structure?
+data structure - way to store data that meets the needs of my app; collection of data values, relationships 
+                 among them, functions or oeprations that can be applied to the data
+relational databases use B-tree indices for data retrieval
+compiler implementations use hash tables to look up identifiers
+
+different trade-offs between data structures
+- how long it takes to first populate the structure
+- how long it takes to add or find elements
+- how large the structure is in memory 
+
+Besides sorting algorithms, search algorithms are big
+ex. traversing a data tree looking for a particular element is a problem that's common in data 
+intensive apps
+
+algorithm uses
+- rearrange a bunch of numbers into sorted order
+- given a road network, origin, and destination, compute the shortest path between point A to point B
+- given a bunch of tasks with deadlines, want to know if accomplishing all the tasks by their 
+  respective deadlines is feasible
+- routing in a communication network, shortest path algorithms
+- public key cryptography
+- in computer graphics, I need the computational primitives
+- database indices rely on balance tree data structures
+- search engines use algorithms to compute the relevance of various webpages
+
+the grade school algorithm for integer multiplcation
+How many primitive operations are needed to multiply two numbers?
+
+How many primitive operations are needed to multiple to n-digit numbers, as a function of n? 
+in ballpark terms, filled out a grid of n * n, so it required a quadratic number of operations
+n rows of roughly n operations
+number of operations overall, approx. constant * n^2
+
+binary search algorithm has a Big O (log n)
+
+What are stacks and queues?
+queue - concrete data structure that I need if I'm going to implement the breadth-first search algorithm
+ex. at a deli - get in line
+                pull a number
+                wait for my number to be called
+                everyone who pulled a number before me is given service before me
+                when I'm the customer who's been in line the longest, my number will be called next
+    enqueue - when I "start waiting", equivalent to pulling a number in the deli
+    dequeue - when it's my turn to be served, equivalent of having my number called at the deli
+    queues are said to be FIFO, first-in-first-out
+
+binary search big O(log n), substantially better than linear search
+              Omega is (1)
+
+How a binary search tree is constructed from an unordered array
+*/
+let arr5 = [5, 7, 1, 15, 9, 2, 14, 8, 7, 3];
+/*
+                    0005 <--- root node
+        0001                0007 <--- one 7 is descendant of the root node
+                                            0015
+                                    0009
+            0002
+                                        0014
+                                0008
+                            0007 <--- other 7 is further down
+                0003            
+
+this tree is not balanced but it is correctly structured
+*/
+
+/*
+linked list - linear collection of data elements of any type
+              principal advantage of a linked list over an array is that values can always be efficiently 
+              inserted and removed without relocating the rest of the list
+              BUT, random access to a certain element, and certain other operations, are slower on lists than arrays
+nodes - data elements of any type 
+        each node has itself a value and points to the next node in the linked list
+
+What's the best way to implement stacks and queues in JS?
+stacks and queues 
+stack - data structure in which elements are sorted by insertion order
+        stacks have a top and a bottom
+        last element in is first out (LIFO)
+        add by pushing from the top, remove by popping an item from the top
+        elements have no index; so they can't be accessed in the middle of the stack
+        can only add to top and remove from the top
+        stacks are useful in contexts where I want to reverse the order of the elements
+        ex. undo button - application stores activities performed in a stack 
+                          when undo is pressed, the activity's that's undone is the last one that was performed 
+
+queue - data structure in which elements are sorted by insertion order
+        queues have a front and a back
+        first in first out (FIFO)
+        add/enqueue only from the back, and remove/dequeue only from the front
+        elements have no index, so middle elements can't be accessed directly
+        ex. managing resources - print queue
+                                 website access
+        
+
+Why bother having many different search algorithms?
+
+What are breadth-first-search (BFS) and depth-first-search (DFS)?
+binary tree traversal - may want to visit all the nodes in the tree exactly once 
+    what visit means is reading or processing data in the node
+    binary trees are not linear data structures, like arrays and linked lists
+    in a linear data structure, start with a pointer at one of the ends and keep 
+    moving it to the other end
+        - for each node or element, I would only have one next element 
+    but in a tree, each node can be pointing to more than one possible direction
+
+BFS and DFS are algorithms for tree traversal 
+based on the order in which nodes are visited, tree traversal algorithms can be either:
+(BFS and DFS are usually used to search graph data structures)
+                    F
+            D               J
+    B           E       G       K
+A       C                   I
+                        H
+
+a tree is a kind of graph
+breadth-first-search - visit all the nodes at the same depth or level,
+                       before visiting the nodes at next level 
+    depth - number of edges in path from root node, with root node at L - O 
+    BFS
+    F, D, J, B, E, G, K, A, C, I, H
+
+breadth-frst tree traversal is called level-order traversal
+    for any node, I visit all its children before visiting any of its grandchildren
+*/
+
+/*
+depth-first-search - visiting a child is visiting the complete subtree in that path
+    visits all the descendants of a child node before moving on to next child node
+    relative order of visiting the left subtree, the right subtreem and the root node 
+    - left subtree L, root node D right subtree R / <left><root><right> - inorder traversal
+      A, B, C, D, E, F, G, H, I, J, K <=== this is a binary search tree!
+                                           for each node, the value of nodes in left is lesser than the value of nodes in right
+      inorder traversal of a binary search would give me a sorted list!
+
+    - root node, left subtree, right subtree / <root><left><right> preorder traversal
+      DL  DL  DL  DL  (after left, right is done for A)  
+      F,  D,  B,  A,        
+      
+      DL  DL  DLR (go right for B) DLR  
+      F,  D,  B,                    A,
+      
+      DL  DL  DLR DLR  DLR
+      F,  D,  B,   A,   C,
+
+      DL  DLR  DLR  DLR  DLR  DLR
+      F,  D,   B,   A,   C,   E,
+
+      DLR DLR  DLR  DLR  DLR  DLR  DL
+      F,  D,   B,   A,   C,   E,   J,
+
+      DLR DLR  DLR  DLR  DLR  DLR  DL  DLR
+      F,  D,   B,   A,   C,   E,   J,  G
+
+      DLR DLR  DLR  DLR  DLR  DLR  DL DLR DL
+      F,  D,   B,   A,   C,   E,   J,  G,  I
+
+      DLR DLR  DLR  DLR  DLR  DLR  DL  DLR  DLR  DLR
+      F,  D,   B,   A,   C,   E,   J,   G,   I,   H
+
+      DLR DLR  DLR  DLR  DLR  DLR  DLR  DLR  DLR  DLR  DLR
+      F,  D,   B,   A,   C,   E,   J,   G,   I,   H,   K
+
+      F, D, B, A, C, E, J, G, I, H, K - this would be recursive 
+
+    - LRD, <left><right><root> - postorder traversal
+      A, C, B, E, D, H, I, G, K, J, F
+
+What situations would I want to use BFS?
+What abstract data types would I use to defer/store nodes in a breadth-first tree traversal?
+
+What situations would I want to use DFS instead?
+What abstract data types would I use to defer/store nodes in a depth-first tree traversal?
+
+*/
