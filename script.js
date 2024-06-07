@@ -1702,7 +1702,232 @@ breadth-first-search - visit all the nodes at the same depth or level,
 
 breadth-frst tree traversal is called level-order traversal
     for any node, I visit all its children before visiting any of its grandchildren
-*/
+
+What can I do to visit all nodes? I can't just use one pointer.
+Instead, I can, as I visit a node, I can reference or address all of its children in a queue 
+then I can visit them later 
+a node in the queue is called a discovered node, whose address is known to us but I haven't visited it yet 
+  400  200  100  120  160  220  300  320  780  560  720
+   F,   D,   J,   B,   E,   G,   K,   A,   C,   I,   H
+
+<== 400           <==
+    (F)
+     Queue (FIFO)
+
+initially start with the address of the root node in the queue, 
+enqueuing the root node and by storing a node in the queue, it means storing the address of the node
+starts with one discovered note
+
+as long as the queue isn't empty, I can take out a node from the front, visit it, and then enqueue its children
+enqueue the left child and then the right child
+
+<== 200  100     <==
+    (D)  (J)   
+    Queue (FIFO)        now, there are 1 visited node and 2 discovered nodes  
+400  
+F,   
+
+again, take out the node at the front of the queue, visit it, and enqueue its children
+using a queue does 2 things:
+1. as I move from a node, I am not losing reference to its children bc I store the references
+2. also bc queues are FIFO, a node that is discovered first, inserted first, will be visited first
+
+dequeue node D, before I move on from node D, I need to enqueue its children
+I have 2 visited nodes, 3 discovered nodes, and 6 undiscovered nodes
+
+<== 100  120  160   <==
+    (J)  (B)  (E)
+    Queue (FIFO)
+400  200
+F,    D, 
+
+dequeue node J, before I move on from node J, I need to enqueue its children
+I have 3 visited nodes, 4 discovered nodes, and 4 undiscovered nodes
+
+<== 120  160  220  300 <==
+    (B)  (E)  (G)  (K)
+    Queue (FIFO)
+400  200  100
+F,   D,   J,
+
+dequeue node B, before I move on from node B, I need to enqueue its children
+I have 4 visited nodes, 5 discovered nodes, and 2 undiscovered nodes
+
+<== 160  220  300  320  780 <==
+    (E)  (G)  (K)  (A)  (C)
+    Queue (FIFO)
+400  200  100  120
+F,   D,   J,   B,
+
+dequeue node E
+I have 5 visited nodes, 4 discovered nodes, and 2 undiscovered nodes
+
+<== 220  300  320  780 <==
+    (G)  (K)  (A)  (C)
+    Queue (FIFO)
+400  200  100  120  160
+F,   D,   J,   B,   E
+
+dequeue node G, before I move on from node G, I need to enqueue its children
+I have 6 visited nodes, 4 discovered nodes, and 1 undiscovered nodes
+
+<== 300  320  780  560 <==
+    (K)  (A)  (C)  (I)
+    Queue (FIFO)
+400  200  100  120  160  220
+F,   D,   J,   B,   E,   G  
+
+dequeue nodes K, A, then C
+I have 9 visited nodes, 1 discovered nodes, and 1 undiscovered nodes
+
+<== 560 <==
+    (I)
+    Queue (FIFO)
+400  200  100  120  160  220  300  320  780
+F,   D,   J,   B,   E,   G,    K,   A,   C
+
+dequeue node I, before I move on from node I, I need to enqueue its children
+I have 10 visited nodes, and 1 discovered nodes
+
+<== 720 <==
+    (H)
+    Queue (FIFO)
+400  200  100  120  160  220  300  320  780  560
+F,   D,   J,   B,   E,   G,    K,   A,   C,   I
+
+dequeue node H
+I have 5 visited nodes, 3 discovered nodes, and 1 undiscovered nodes
+
+<==  <==   now the queue is empty
+Queue (FIFO)
+400  200  100  120  160  220  300  320  780  560  720
+F,   D,   J,   B,   E,   G,    K,   A,   C,   I,   H
+
+Go on until all the nodes are visited and the queue is empty
+this is the algorithm for level order traversal of a binary tree
+at any time, I am keeping a bunch of addresses in the memory, in the queue, 
+instead of using just one pointer to move around
+I am using a lot of extra memory
+
+#include<iostream>
+#include<queue>
+using namespace std;
+struct Node {
+    char data;
+    Node *left;
+    Node *right;
+}
+
+// function that takes address of the rode node as argument and print the data in the nodes in level order 
+void LevelOrder(node *root) {
+
+    // take care of a common case, if the tree/root is empty/null
+    if (root === null) return;
+
+    // creates a queue of pointer to node 
+    queue<Node*>Q; 
+
+    // initially start with one discovered node in the queue, the only node known to me initially is the root node
+    // inserts the address of root node in the queue
+    Q.push(root);
+
+    // while there is at least one discovered node/the queue isn't empty
+    while (!Q.empty()) {
+
+        // take out a node from the front, function front returns the element at the front of the queue
+        // data type is pointer to node, collect the return of this function, the pointer to node, named current
+        Node* current = Q.front(); 
+
+        // I can visit/read this code being pointed by current
+        cout<<current->data<<" ";
+
+        // push the addresses of children of this node into the queue
+        // if the left child is not null, push its address into the queue
+        if (current -> left !== null) Q.push(current->left);
+
+        // if the right child is not null, push its address into the queue
+        if (current -> right !== null) Q.push(current->right);
+
+        // remove the element from the front of the queue
+        Q.pop(); 
+    }
+}
+int main() {
+    // some code to test LevelOrder function
+}
+
+// need other code to create and insert nodes a binary tree
+
+class is initialized with three properties */
+class Node {
+  constructor(data) {
+    this.data = data; // data type
+    this.left = null; // property that is a pointer storing the address of left child node
+    this.right = null; // property that is a pointer  storing the address of right child node
+  }
+}
+
+// creates a new instance of the Node class
+let node = new Node("a");
+console.log(node.data);
+
+// creates a root node and adds left and right children to it
+const root = new Node("b");
+root.left = new Node("c");
+root.right = new Node("d");
+
+console.log(root);
+
+// function that takes address of the rode node as argument and print the data in the nodes in level order
+function levelOrder(root) {
+  // take care of a common case, if the tree/root is empty/null
+  if (root === null) return;
+
+  // creates a queue of pointer to node
+  const queue = [];
+
+  // initially start with one discovered node in the queue, the only node known to me initially is the root node
+  // inserts/enqueues the address of root node in the queue
+  queue.push(root);
+
+  // while there is at least one discovered node/the queue isn't empty
+  while (queue.length > 0) {
+    // take out a node from the front, dequeues the front node
+    // data type is pointer to node, collect the return of this function, the pointer to node, named current
+    const current = queue.shift();
+
+    // I can visit/read/print this code being pointed by current
+    console.log(current.data + " ");
+
+    // push the addresses of children of this node into the queue
+    // if the left child is not null, push its address/enqueues it into the queue
+    if (current.left !== null) queue.push(current.left);
+
+    // if the right child is not null, push its address/enqueues into the queue
+    if (current.right !== null) queue.push(current.right);
+
+    // remove the element from the front of the queue
+    queue.pop();
+  }
+}
+
+root.left.left = new Node("e");
+root.left.right = new Node("f");
+root.right.left = new Node("g");
+root.right.right = new Node("h");
+
+levelOrder(root);
+
+/* time complexity
+if there are n nodes in the tree, 
+visit to a node, is reading the data in the node, inserting its children into the queue, 
+a visit to a node takes constant time
+each node will be visited exactly once
+Big O(n)
+
+space complexity- rate of growth of extra memory used relative to input size 
+Big O(1) - if the tree goes down, and each node only has a left child - best 
+Big O(n) - worst/average */
 
 /*
 depth-first-search - visiting a child is visiting the complete subtree in that path
@@ -1712,7 +1937,23 @@ depth-first-search - visiting a child is visiting the complete subtree in that p
       A, B, C, D, E, F, G, H, I, J, K <=== this is a binary search tree!
                                            for each node, the value of nodes in left is lesser than the value of nodes in right
       inorder traversal of a binary search would give me a sorted list!
+*/
+function inorder(root) {
+  if (root === null) return;
 
+  // recursively visits the left subtree
+  inorder(root.left);
+
+  // first prints the root node data
+  console.log(root.data + " ");
+
+  // recursively visits the right subtree
+  inorderorder(root.right);
+}
+
+inorder(root);
+
+/*
     - root node, left subtree, right subtree / <root><left><right> preorder traversal
       DL  DL  DL  DL  (after left, right is done for A)  
       F,  D,  B,  A,        
@@ -1743,13 +1984,91 @@ depth-first-search - visiting a child is visiting the complete subtree in that p
 
       F, D, B, A, C, E, J, G, I, H, K - this would be recursive 
 
+// function that takes pointer or reference to root node as argument and prints data in all the nodes 
+void Preorder(Node *root) {
+
+    // base condition for exiting a tree or subtree, namely when the tree or subtree is empty/ for any call, if root === null
+    if (root === null) return;
+
+    // first visit/print the data in root node
+    printf("%c ", root->data);
+
+    // recursive call to visit the left subtree, passing it the address of the left child of my current root
+    Preorder(root-<left);
+
+    // recursive call to visit the right subtree, passing it the address of the right child of my current root
+    Preorder(root->right);
+}
+*/
+
+// performs a preorder depth-first traversal of a binary tree; keep in mind: identity of the tree is always the address of the root node
+// address of the root node is what gets passed to all the functions
+//  a variable of type pointer to node will be used, named root, that stores the address of root node
+function preorder(root) {
+  if (root === null) return;
+
+  // first prints the root node data
+  console.log(root.data + " ");
+
+  // recursively visits the left subtree
+  preorder(root.left);
+
+  // recursively visits the right subtree
+  preorder(root.right);
+}
+preorder(root);
+/* even though I am not using any extra memory explicitly,
+ bc of the recursion, I am growing the function call stack
+ for each function call, I allocate some amount of memory in the stack section of applications memory
+ this allocated memory is reclaimed when the function call finishes 
+ only the call at the top of the stack will be executing
+ all other calls will be paused
+ the call stack keeps growing and shrinking during the program's execution, so memory is used implicitly in the call stack
+ space complexity for preorder depth-first traversal depends on the maximum depth/height of the tree... O(h) where h is height of the tree
+ call stack only grows until I reach a leaf node, a node with no children and then the stack will start shrinking
+*/
+
+/*
     - LRD, <left><right><root> - postorder traversal
       A, C, B, E, D, H, I, G, K, J, F
+*/
+function postorder(root) {
+  if (root === null) return;
 
+  // recursively visits the left subtree
+  postorder(root.left);
+
+  // recursively visits the right subtree
+  postorder(root.right);
+
+  // first prints the root node data
+  console.log(root.data + " ");
+}
+
+postorder(root);
+
+/* time complexity for all three depth-first traversals is O(n) 
+space complexity for all three depth-first traversals is O(h), worst: O(n) and best/average: O(log n)
+*/
+
+/* 
 What situations would I want to use BFS?
-What abstract data types would I use to defer/store nodes in a breadth-first tree traversal?
+What abstract data types would I use to defer/store nodes in a breadth-first tree traversal? in a queue
 
 What situations would I want to use DFS instead?
-What abstract data types would I use to defer/store nodes in a depth-first tree traversal?
+What abstract data types would I use to defer/store nodes in a depth-first tree traversal? in a stack
+
+Project: Linked Lists
+main benefit of a linked list over an array - list elements can easily be inserted or removed without 
+    reallocation of any other elements
+in some languages, the size of an array is a concern and a way to overcome the problem and allow 
+    dynamically allocated data is using linked lists
+
+linked list - linear collection of data elements called nodes that point to the next node by means of a pointer
+node - holds a single element of data and a link/pointer to the next node in the list
+head node - first node in the list 
+tail node - last node in the list
+
+[NODE(head)] -> [NODE] -> [NODE(tail)] -> null
 
 */
