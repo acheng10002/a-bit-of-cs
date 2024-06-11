@@ -2071,4 +2071,88 @@ tail node - last node in the list
 
 [NODE(head)] -> [NODE] -> [NODE(tail)] -> null
 
+
+HashMap Data Structure
+JS object literals ({}), Set, and Map, use structures based on hash tables
+they help save key value pairs and later retrieve them
+
+hash map - takes in a key value pair, produces a hash code, and stores the pair in a bucket
+
+
+What is a hash code?
+What does it mean to hash?
+hash - take an input in and generate a corresponding output
+hash function - a pure function with no random generation component
+                hashing the same input should always return the same hash code
+*/
+
+// hashing function takes a name and gives the first letter of that name
+function hash(name) {
+  return name.charAt(0);
+}
+hash(Kai);
+
+// an improvement on above- it eliminates many duplicate hash codes from being generated
+function betterHash(name, surname) {
+  return name.charAt(0) + surname.charAt(0);
+}
+betterHash(Kai, Cheng);
+
+// now I take the entire name and convert it into numbers
+function evenBetterHashHelper(string) {
+  let hashCode = 0;
+  for (let i = 0; i < string.length; i++) {
+    hashCode += string.charCodeAt(i);
+  }
+  return hashCode;
+}
+
+function evenBetterHash(name, surname) {
+  return evenBetterHashHelper(name) + evenBetterHashHelper(surname);
+}
+
+/*
+difference between hasing and ciphering/encryption: hashing is a one-way process
+
+hash codes and how to generate them
+for hash maps, hash codes need to be a number
+and the number will serve as the index to the bucket that will store the key value pair
+
+Buckets?
+What are buckets?
+bucket - storage that I need to store elements; an array
+         for a specific key, I need to decide which bucket to use for storage through my hash function 
+
+hash maps and how they work internally
+hash function returns a number that serves as the index of the bucket array at which I store this specific key value pair
+ex. I want to store a person's full name as a key "Fred" with a value "Smith"
+    1. Pass "Fred" into the hash function to get the hash code which is 385
+    2. Find the bucket at index 385
+    3. Store the key value pair in that bucket
+       the key would be "Fred' and the value would be "Smith
+    If the bucket at index 385 already contains an item with the same key "Fred", check if it's the same item by
+    comparing the keys, then overwrite the value with my new value 
+      leads to me only having unique values inside a Set
+      Set will have nodes with only keys and no values
+
+If I want to get a value using a key:
+    1. Hash the key and calculate its bucket number.
+    2. if the bucket is not empty, I go to that bucket.
+    3. Compare if the node's key is the same key that was used for the retrieval
+    4. If it is, then I can return the node's value, otherwise I return null
+
+*A hash code is just the location, different keys might generate the same hash code
+I need to make sure the key is the same by comparing both keys that are inside the bucket
+
+Making this will result in a hash table with has, set, and get
+
+Collisions?
+What is a collision?
+
+Growth of hash table
+When is it a good time to grow my table? 
+
+Computation complexity
+
+
 */
