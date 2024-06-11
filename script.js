@@ -2146,13 +2146,378 @@ I need to make sure the key is the same by comparing both keys that are inside t
 
 Making this will result in a hash table with has, set, and get
 
+insertion order is not maintained
+some libraries implement hash tables with insertion order in mind, like JS's Map
+
+/ hash map data structures = hash tables = dictionaries
+they're efficient in accessing and manipulating data
+for key-value stores:
+  config settings - stores app settings where each setting has a unique key
+  caching - stores frequently accessed data to improve performance by reducing redundant data fetching
+for database indexing:
+  hashmaps create indexes that allow for quick access to data
+  indexes map keys to records in the database
+for counting frequencies:
+  hashmaps can be used to count the occurences of elements in a dataset, 
+  exs. counting word frequency in a text or the frequency of items sold in a store
+for symbol tables in compilers:
+  compilers use hashmaps to manage symbol tables with store info about variable names, function names, and other
+    identifiers used in the source code 
+for implementing sets:
+  the keys present the elements of the set
+  allows for fast membership testing, insertion, and deletion
+for routing and dispatching:
+  hashmaps get used in networking and web servers to route requests to appropriate handlers
+    routing in webservers - mapping urls to handler functions
+    DNA resolution - mapping domain names to IP addresses
+for data de-duplication:
+  hashmaps help remove duplicate entries from data collections by using keys to track unique items
+for memoization in dynamic programming:
+  hashmaps store intermediate results (memoization) to avoid redundant calculations and improve efficiency
+for graph algorithms:
+  in various graph algorithms, hashmaps store adjacency lists and keep track of visited nodes 
+for authentication systems:
+  hashmaps store user sessions and tokens, enabling quick validation and management of user authentication
+/
+
+the next project will be an unordered hash map
+if I need to iterate over a hash map frequently, hash tables are not the right choice, a simple array would be better
+
 Collisions?
 What is a collision?
+collision - when two different keys generate the exact same hash code (because of the hashing function), landing them
+            in the same bucket
+when this happens, rework the hashing function to give me unique hash codes that depend on where the letters appear in the name
+*/
 
+function bestHashHelper(string) {
+  let hashCode = 0;
+
+  const primeNumber = 31;
+  for (let i = 0; i < string.length; i++) {
+    // here, the hash code starts to change because I am multiplying the old hash with every new iteration and then adding the letter code
+    hashCode += primeNumber * hashCode + string.charCodeAt(i);
+  }
+  return hashCode;
+}
+/* prime numbers are preferable, because multiplying by a prime number will reduce the likelihood of hash codes being evenly divisible 
+by the bucket length, and this helps minimize the occurence of collisions, no way to eliminate collisions completely
+
+Dealing with collisions
+What if the bucket was a linked list and not just a node?
+When inserting into a bucket, if it's empty, insert the head of the linked list
+if a head exists in a bucket, follow that linked list to add to the end of it 
+
+1. hash function
+   hash code is used to determine the bucket where the entry should be placed
+
+   hash_code = hash_function(key)
+
+   2. bucket index calculation
+   hash code is converted into a bucket index
+   
+   bucket_index = hash_code % bucket_array_size
+
+   3. store in buckets
+   each bucket is a slot in an array, where entries are stored
+   if a bucket is empty, the new entry is placed there
+   if the bucket is already occupied, use a linked list to store multiple entries in the same bucket
+   
+   buckets[bucket_index] = new Entry(key, value, next_entry)
+
+   4. collision handling 
+   chaining - each bucket points to a linked list of entries that have the same bucket index
+   open addressing - upon collision, the algorithm searches for the next available bucket in the array
+
+   5. retrieval 
+   to retrieve a value:
+   pass the key through the hash function again
+   the bucket index is calculated
+   the entries in the bucket are searched to find the matching key
+
+   hash_code = hash_function(key)
+   bucket_index = hash_code % bucket_array_size
+   entry = search_bucket(buckets[bucket_index], key)
+
+
+6. rehashing 
+   when the hashmap becomes too full, rehashing is performed
+   rehashing involves creating a new, larger array of buckets and re-inserting all the entries based on 
+   the new bucket indices
+   
+   new_bucket_array_size = current_bucket_array_size * 2
+   rehash_all_entries(new_bucket_array, old_bucket_array)
+*/
+class HashMap {
+  constructor(size) {
+    // sets the size property to the value passed as an argument
+    this.size = size;
+
+    /* creates an array of the specified size, initializes all elements to null and then maps
+    each element to an empty array, the buckets array will be used to store key-value pairs 
+    hashmaps use buckets to store key-value pairs 
+    chaining stores entries in an array at each bucket 
+    values are then efficiently inserted and retrieved */
+    this.buckets = Array(size)
+      .fill(null)
+      .map(() => []);
+  }
+
+  // Hash Function
+  hash(key) {
+    let hash = 0;
+
+    // loops over each character in the key string
+    for (let i = 0; i < key.length; i++) {
+      /* updates the hash using bitwise left shift and the character code of the current character
+      bitwise left shift - shifts all the bits in a binary number to the left by a specified number of positions */
+      hash = (hash << 5) - hash + key.charCodeAt(i);
+      hash |= 0; // convert to 32bit integer
+    }
+
+    // returns the computed hash code
+    return hash;
+  }
+
+  // Bucket Index Calculation
+  getBucketIndex(key) {
+    /* computes the absolute value of the hash code, then takes the modulo with the size of the 
+    hashmap to get the bucket index */
+    return Math.abs(this.hash(key)) % this.size;
+  }
+
+  // Adds a key-value pair to the hashmap
+  set(key, value) {
+    // computes the bucket index for the given key
+    const index = this.getBucketIndex(key);
+
+    // loops through the entries in the bucket at the computed index
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      // if the key already exists in the bucket, updates its value and exits the method
+      if (this.buckets[index][i][0] === key) {
+        this.buckets[index][i][1] === value;
+        return;
+      }
+    }
+
+    // if the key does not exist, add the new key-value pair to the bucket
+    this.buckets[index].push([key, value]);
+  }
+
+  // retrieves the value for a given key
+  get(key) {
+    // computes the bucket index for the given key
+    const index = this.getBucketIndex(key);
+
+    // loops through the entries in the bucket at the computed index
+    for (let i = 0; i < this.buckets[index].length; i++) {
+      // if the key is found, returns the corresponding value
+      if (this.buckets[index][i][0] === key) {
+        return this.buckets[index][i][1];
+      }
+    }
+
+    // if the key is not found, return null
+    return null;
+  }
+}
+
+// creates a new hashmap instance with 10 buckets
+const map = new HashMap(10);
+
+// adds the key-value pair `("name", "Alice")` to the hashmap
+map.set("name", "Alice");
+
+// retrieves and prints the value associated with the key `"name"`, which is `"Alice"`
+console.log(map.get("name")); // Alice
+
+/*
 Growth of hash table
 When is it a good time to grow my table? 
+I don't have infinite memory, so I can't have an infinite number of buckets
+So I'll start with a small array for my buckets, array size 16 
+  16 is a power of 2, which helps with some techniques for performance that require bit manipulation for indexes
+
+How to deal with big hash code numbers? Use the modulo operation
+  given any number modulo by 16, I will get a number between 0 and 15
+
+As I continue to add nodes into my buckets, collisions get more likely
+eventually there will be more nodes than there are buckets, which guarantees a collision
+  I don't want collisions, so I grow my buckets to have more chance that our nodes will spread and not stack up in the same buckets
+  how to grow my buckets - create a new buckets list that is double the size of the old buckets list, then copy all nodes over to
+  the new buckets
+
+When do I know it's time to grow my buckets size?
+hashmap class needs to keep track of 2 new fields: capacity and load factor
+capacity - total number of buckets I currently have
+load factor - a number that I assign my hash map to at the start
+              this factor determines when it's a good time to grow my buckets
+              hash map implementations use a load factor between 0.75 and 1 
+product of the capacity and the load number gives me a number...
+I know it's time to grow when there are more entries in the hash map that that product
+  if there are 16 buckets
+  load factor is 0.8
+  I need to grow the buckets when there are more than 16 * 0.8 = 12.8 entries
+
+setting the product number too low will consume too much memory by having too many empty buckets
+setting the product number too high allows my buckets to have many collisions before I grow them 
 
 Computation complexity
+hash map has an average case complexity of O(1) for insertion, retrieval, and removal 
+worse case of those operations would be O(n) and that happens when I have all my data hashes to the same exact bucket
 
-
+growth of my hash map has complexity of O(n) at all times
 */
+
+class Node {
+  constructor(key, value) {
+    this.key = key;
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor() {
+    this.head = null;
+  }
+
+  add(key, value) {
+    // creates a new Node isntance with the given key and value
+    const newNode = new Node(key, value);
+
+    // checks if the LinkedList instance is empty
+    if (!this.head) {
+      // if it is, sets the head of the list to be the newNode
+      this.head = newNode;
+    } else {
+      // initializes current to point to the head of LinkedList instance, current will be used to traverse the LinkedList instance
+      let current = this.head;
+
+      // starts a while loop that continues as long as the current node has a next node
+      while (current.next) {
+        // checks if the key of the current node matches the key being added
+        if (current.key === key) {
+          // if it does, updates the value of the current node to the new value provided
+          current.value = value;
+
+          // exists function, and there was no need to add a new node
+          return;
+        }
+
+        // moves to the next node in LinkedList instance
+        current = current.next;
+      }
+
+      // after exiting the loop, checks if the key of the current node, which will be the last node, matches the key being added
+      if (current.key === key) {
+        // if it is, updates the value of the existing node
+        current.value = value;
+      } else {
+        // if it isn't, adds the new node to the end of the LinkedList instance
+        current.next = newNode;
+      }
+    }
+  }
+
+  // retrieves a value for a given key
+  get(key) {
+    // initializes current to point to the head of LinkedList instance, current will be used to traverse the LinkedList instance
+    let current = this.head;
+
+    // starts a while loop that continues as long as the LinkedList instead has a current node
+    while (current) {
+      // checks if the key of the current node matches the key being retrieved
+      if (current.key === key) {
+        // if it does, return the value of the current node
+        return current.value;
+      }
+
+      // otherwise, moves to the next node in LinkedList instance
+      current = current.next;
+    }
+
+    // returns null if the key doesn't match any of the keys in the nodes of the LinkedList instance
+    return null;
+  }
+
+  // removes a key-value pair
+  remove(key) {
+    // if the LinkedList instance is already empty, return null
+    if (!this.head) return null;
+
+    // if the key of the head node matches the key to be removed
+    if (this.head.key === key) {
+      // updates the head to point to the next node
+      this.head = this.head.next;
+      return;
+    }
+
+    let current = this.head;
+
+    /* traverse the list to find the node before the one to be removed
+    starts a while loop that continues as long as the current node has a next node and as long as 
+    the key of the next node doesn't match the key to be removed */
+    while (current.next && current.next.key !== key) {
+      // move to the next node in LinkedList instance
+      current = current.next;
+    }
+
+    // after exiting the loop, checks if the next node exists, this means the key was found in the LinkedList instance
+    if (current.next) {
+      /* if the next node exists and matches the key to be removed, this line updates the next pointer of the current 
+      node to skip the node to be removed, removing the node with the given key from the LinkedList */
+      current.next = current.next.next;
+    }
+  }
+}
+
+class HashMapWLLBuckets {
+  constructor(size) {
+    this.size = size;
+
+    this.buckets = Array(size)
+      .fill(null)
+      .map(() => []);
+  }
+
+  // Hash Function
+  hash(key) {
+    let hash = 0;
+    for (let i = 0; i < key.length; i++) {
+      hash = (hash << 5) - hash + key.charCodeAt(i);
+      hash |= 0; // convert to 32bit integer
+    }
+
+    // returns the computed hash code
+    return hash;
+  }
+
+  // Bucket Index Calculation
+  getBucketIndex(key) {
+    return Math.abs(this.hash(key)) % this.size;
+  }
+
+  // Adds a key-value pair to the hashmap
+  set(key, value) {
+    const index = this.getBucketIndex(key);
+    this.buckets[index].add(key, value);
+  }
+
+  // retrieves the value for a given key
+  get(key) {
+    const index = this.getBucketIndex(key);
+    return this.buckets[index].get(key);
+  }
+
+  remove(key) {
+    const index = this.getBucketIndex(key);
+    this.buckets[index].remove(key);
+  }
+}
+
+const map2 = new HashMapWLLBuckets(10);
+map2.set("name", "Alice");
+console.log(map2.get("name")); // Alice
+map2.remove("name");
+console.log(map2.get("name")); // null
