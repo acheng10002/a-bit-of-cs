@@ -1235,7 +1235,7 @@ const persons = ["person 1", "person 2", "person 3", "person 4"];
 function servingDrinks(drinkList, personsList) {
   for (let i = 0; i < drinkList.length; i++) {
     for (let j = 0; j < personsList.length; j++) {
-      console.log(`Gives ${drinksList[i]} to ${personsList[i]}`);
+      console.log(`Gives ${drinkList[i]} to ${personsList[i]}`);
     }
   }
 }
@@ -1351,7 +1351,7 @@ function findValue(arr) {
   }
 }
 
-findValue(arr);
+findValue([9, 8, 1, 4, 7, 3]);
 
 /* algorithm with factorial growth - traveling salesman problem 
 
@@ -1370,7 +1370,7 @@ function recursiveFactorial(n) {
 
 const t0 = performance.now();
 recursiveFactorial(1);
-const t1 = performancenow();
+const t1 = performance.now();
 console.log("The function took: " + (t1 - t0) + " milliseconds.");
 
 recursiveFactorial(1); // 0.02 ms
@@ -1896,7 +1896,7 @@ function levelOrder(root) {
     // data type is pointer to node, collect the return of this function, the pointer to node, named current
     const current = queue.shift();
 
-    // I can visit/read/print this code being pointed by current
+    // I can visit/read/print this node being pointed by current
     console.log(current.data + " ");
 
     // push the addresses of children of this node into the queue
@@ -1948,7 +1948,7 @@ function inorder(root) {
   console.log(root.data + " ");
 
   // recursively visits the right subtree
-  inorderorder(root.right);
+  inorder(root.right);
 }
 
 inorder(root);
@@ -2090,13 +2090,11 @@ hash function - a pure function with no random generation component
 function hash(name) {
   return name.charAt(0);
 }
-hash(Kai);
 
 // an improvement on above- it eliminates many duplicate hash codes from being generated
 function betterHash(name, surname) {
   return name.charAt(0) + surname.charAt(0);
 }
-betterHash(Kai, Cheng);
 
 // now I take the entire name and convert it into numbers
 function evenBetterHashHelper(string) {
@@ -2369,7 +2367,7 @@ worse case of those operations would be O(n) and that happens when I have all my
 growth of my hash map has complexity of O(n) at all times
 */
 
-class Node {
+class Node1 {
   constructor(key, value) {
     this.key = key;
     this.value = value;
@@ -2384,7 +2382,7 @@ class LinkedList {
 
   add(key, value) {
     // creates a new Node isntance with the given key and value
-    const newNode = new Node(key, value);
+    const newNode = new Node1(key, value);
 
     // checks if the LinkedList instance is empty
     if (!this.head) {
@@ -2478,7 +2476,9 @@ class HashMapWLLBuckets {
 
     this.buckets = Array(size)
       .fill(null)
-      .map(() => []);
+
+      // initializes each bucket as a LinkedList
+      .map(() => new LinkedList());
   }
 
   // Hash Function
